@@ -1,4 +1,4 @@
-package com.example.boleto;
+package com.example.messageria.boleto;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
