@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
+import com.example.messageria.boleto.controller.exception.ApplicationException;
 import com.example.messageria.boleto.dto.BoletoDTO;
 import com.example.messageria.boleto.mapper.BoletoMapper;
 import com.example.messageria.boleto.model.Boleto;
@@ -22,7 +23,7 @@ public class BoletoService {
   public BoletoDTO salvar(String codigoBarras) {
     var boletoOptional = boletoRepository.findByCodigoBarras(codigoBarras);
     if (boletoOptional.isPresent()) {
-      throw new RuntimeException("Já existe uma solicitação de pagamento para esse boleto");
+      throw new ApplicationException("Já existe uma solicitação de pagamento para esse boleto");
     }
 
     var boletoEntity = Boleto.builder()
