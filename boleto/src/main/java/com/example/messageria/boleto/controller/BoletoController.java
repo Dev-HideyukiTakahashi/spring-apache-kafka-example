@@ -11,6 +11,8 @@ import com.example.messageria.boleto.dto.BoletoDTO;
 import com.example.messageria.boleto.dto.BoletoRequestDTO;
 import com.example.messageria.boleto.service.BoletoService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(path = "/api/boleto")
 public class BoletoController {
@@ -22,7 +24,7 @@ public class BoletoController {
   }
 
   @PostMapping
-  public ResponseEntity<BoletoDTO> salvar(@RequestBody BoletoRequestDTO boletoRequestDTO) {
+  public ResponseEntity<BoletoDTO> salvar(@Valid @RequestBody BoletoRequestDTO boletoRequestDTO) {
     var boleto = boletoService.salvar(boletoRequestDTO.getCodigoBarras());
     return ResponseEntity.status(HttpStatus.CREATED).body(boleto);
   }
