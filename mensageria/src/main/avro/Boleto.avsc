@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "namespace": "com.example.consumer.avro",
+  "namespace": "com.example.messageria.avro",
   "name": "Boleto",
   "fields": [
     {
