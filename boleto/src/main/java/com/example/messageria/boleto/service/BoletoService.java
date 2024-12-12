@@ -10,14 +10,17 @@ import com.example.messageria.boleto.mapper.BoletoMapper;
 import com.example.messageria.boleto.model.Boleto;
 import com.example.messageria.boleto.model.enums.SituacaoBoleto;
 import com.example.messageria.boleto.repository.BoletoRepository;
+import com.example.messageria.boleto.service.kafka.BoletoProducer;
 
 @Service
 public class BoletoService {
 
   private final BoletoRepository boletoRepository;
+  private final BoletoProducer boletoProducer;
 
-  public BoletoService(BoletoRepository boletoRepository) {
+  public BoletoService(BoletoRepository boletoRepository, BoletoProducer boletoProducer) {
     this.boletoRepository = boletoRepository;
+    this.boletoProducer = boletoProducer;
   }
 
   public BoletoDTO salvar(String codigoBarras) {
@@ -34,6 +37,8 @@ public class BoletoService {
         .build();
 
     boletoRepository.save(boletoEntity);
+    // envia mensagem para kafka
+    boletoProducer.enviarMensagem(BoletoMapper.toDTO(boletoEntity));
     return BoletoMapper.toDTO(boletoEntity);
   }
 }
