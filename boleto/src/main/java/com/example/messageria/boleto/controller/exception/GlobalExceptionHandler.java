@@ -1,7 +1,6 @@
 package com.example.messageria.boleto.controller.exception;
 
 import java.util.Date;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
