@@ -20,7 +20,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Boleto {
+public class BoletoEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

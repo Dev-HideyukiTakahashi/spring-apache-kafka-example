@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-import com.example.messageria.boleto.dto.BoletoDTO;
+import com.example.messageria.avro.Boleto;
 
 @Component
 public class BoletoProducer {
@@ -12,13 +12,15 @@ public class BoletoProducer {
   @Value("${spring.kafka.topico-boleto}")
   public String topico;
 
-  private final KafkaTemplate<String, BoletoDTO> kafkaTemplate;
+  // a classe Boleto vem de import com.example.messageria.avro.Boleto e não do
+  // model
+  private final KafkaTemplate<String, Boleto> kafkaTemplate;
 
-  public BoletoProducer(KafkaTemplate<String, BoletoDTO> kafkaTemplate) {
+  public BoletoProducer(KafkaTemplate<String, Boleto> kafkaTemplate) {
     this.kafkaTemplate = kafkaTemplate;
   }
 
-  public void enviarMensagem(BoletoDTO dto) {
+  public void enviarMensagem(Boleto dto) {
     kafkaTemplate.send(topico, dto);
   }
 }

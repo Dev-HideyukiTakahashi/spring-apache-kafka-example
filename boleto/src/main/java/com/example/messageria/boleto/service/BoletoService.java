@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.example.messageria.boleto.controller.exception.ApplicationException;
 import com.example.messageria.boleto.dto.BoletoDTO;
 import com.example.messageria.boleto.mapper.BoletoMapper;
-import com.example.messageria.boleto.model.Boleto;
+import com.example.messageria.boleto.model.BoletoEntity;
 import com.example.messageria.boleto.model.enums.SituacaoBoleto;
 import com.example.messageria.boleto.repository.BoletoRepository;
 import com.example.messageria.boleto.service.kafka.BoletoProducer;
@@ -29,7 +29,7 @@ public class BoletoService {
       throw new ApplicationException("Já existe uma solicitação de pagamento para esse boleto");
     }
 
-    var boletoEntity = Boleto.builder()
+    var boletoEntity = BoletoEntity.builder()
         .codigoBarras(codigoBarras)
         .situacaoBoleto(SituacaoBoleto.INICIALIZADO)
         .dataCriacao(LocalDateTime.now())
@@ -38,7 +38,7 @@ public class BoletoService {
 
     boletoRepository.save(boletoEntity);
     // envia mensagem para kafka
-    boletoProducer.enviarMensagem(BoletoMapper.toDTO(boletoEntity));
+    boletoProducer.enviarMensagem(BoletoMapper.toAvro(boletoEntity));
     return BoletoMapper.toDTO(boletoEntity);
   }
 }
