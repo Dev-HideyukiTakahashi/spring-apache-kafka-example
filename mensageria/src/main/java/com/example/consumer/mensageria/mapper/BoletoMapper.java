@@ -11,6 +11,12 @@ public class BoletoMapper {
         .codigoBarras(boleto.getCodigoBarras().toString())
         .situacaoBoleto(SituacaoBoleto.values()[boleto.getSituacaoBoleto()])
         .build();
+  }
 
+  public static Boleto toAvro(BoletoEntity boletoEntity) {
+    return Boleto.newBuilder()
+        .setCodigoBarras(boletoEntity.getCodigoBarras())
+        .setSituacaoBoleto(boletoEntity.getSituacaoBoleto().ordinal())
+        .build();
   }
 }

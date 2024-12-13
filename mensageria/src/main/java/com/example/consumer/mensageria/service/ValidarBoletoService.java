@@ -4,17 +4,21 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
+import com.example.consumer.mensageria.mapper.BoletoMapper;
 import com.example.consumer.mensageria.model.BoletoEntity;
 import com.example.consumer.mensageria.model.enums.SituacaoBoleto;
 import com.example.consumer.mensageria.repository.BoletoRepository;
+import com.example.consumer.mensageria.service.kafka.NotificaoProducer;
 
 @Service
 public class ValidarBoletoService {
 
   private final BoletoRepository boletoRepository;
+  private final NotificaoProducer notificaoProducer;
 
-  public ValidarBoletoService(BoletoRepository boletoRepository) {
+  public ValidarBoletoService(BoletoRepository boletoRepository, NotificaoProducer notificaoProducer) {
     this.boletoRepository = boletoRepository;
+    this.notificaoProducer = notificaoProducer;
   }
 
   public void validar(BoletoEntity boletoEntity) {
@@ -23,6 +27,7 @@ public class ValidarBoletoService {
       complementarBoletoErro(boletoEntity);
       boletoRepository.save(boletoEntity);
       // notificando
+      notificaoProducer.enviarMensagem(BoletoMapper.toAvro(boletoEntity));
     } else {
       complementarBoletoSucesso(boletoEntity);
       boletoRepository.save(boletoEntity);
