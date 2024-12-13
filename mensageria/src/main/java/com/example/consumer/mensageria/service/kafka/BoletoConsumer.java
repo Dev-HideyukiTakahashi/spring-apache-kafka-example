@@ -10,6 +10,8 @@ import com.example.consumer.mensageria.mapper.BoletoMapper;
 import com.example.consumer.mensageria.service.ValidarBoletoService;
 import com.example.messageria.avro.Boleto;
 
+import lombok.SneakyThrows;
+
 @Service
 public class BoletoConsumer {
 
@@ -21,7 +23,9 @@ public class BoletoConsumer {
   }
 
   @KafkaListener(topics = "${spring.kafka.topico-boleto}", groupId = "${spring.kafka.consumer.group-id}")
+  @SneakyThrows
   public void consomeBoleto(Boleto boleto, Acknowledgment acknowledgment) {
+    Thread.sleep(10000);
     LOGGER.info(String.format("Consumindo mensagem -> %s", boleto));
     validarBoletoService.validar(BoletoMapper.toEntity(boleto));
     acknowledgment.acknowledge();

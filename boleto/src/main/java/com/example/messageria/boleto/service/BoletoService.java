@@ -43,6 +43,10 @@ public class BoletoService {
     return BoletoMapper.toDTO(boletoEntity);
   }
 
+  public BoletoDTO buscarBoletoPorCodigoBarras(String codigoBarras){
+    return BoletoMapper.toDTO(recuperaBoleto(codigoBarras));
+  }
+
   public void atualizar(BoletoEntity boleto){
     var boletoAtual = recuperaBoleto(boleto.getCodigoBarras());
 
