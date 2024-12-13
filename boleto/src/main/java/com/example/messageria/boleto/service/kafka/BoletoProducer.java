@@ -20,7 +20,15 @@ public class BoletoProducer {
     this.kafkaTemplate = kafkaTemplate;
   }
 
-  public void enviarMensagem(Boleto dto) {
-    kafkaTemplate.send(topico, dto);
+  public void enviarMensagem(Boleto boleto) {
+    kafkaTemplate.send(topico, getKey(boleto), boleto);
+  }
+
+  // definindo partições que vão receber a msg
+  private String getKey(Boleto boleto){
+    if(boleto.getCodigoBarras().toString().substring(0,1).equals("2")){
+      return "chave1";
+    }
+    return "chave2";
   }
 }
