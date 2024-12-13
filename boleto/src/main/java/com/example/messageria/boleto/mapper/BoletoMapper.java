@@ -3,6 +3,7 @@ package com.example.messageria.boleto.mapper;
 import com.example.messageria.avro.Boleto;
 import com.example.messageria.boleto.dto.BoletoDTO;
 import com.example.messageria.boleto.model.BoletoEntity;
+import com.example.messageria.boleto.model.enums.SituacaoBoleto;
 
 public class BoletoMapper {
 
@@ -22,6 +23,13 @@ public class BoletoMapper {
         .setCodigoBarras(boleto.getCodigoBarras())
         .setSituacaoBoleto(boleto.getSituacaoBoleto().ordinal())
         .build();
+  }
+
+  public static BoletoEntity toEntity(Boleto boleto){
+    return BoletoEntity.builder()
+            .codigoBarras(boleto.getCodigoBarras().toString())
+            .situacaoBoleto(SituacaoBoleto.values()[boleto.getSituacaoBoleto()])
+            .build();
   }
 
 }

@@ -2,6 +2,7 @@ package com.example.messageria.boleto.service;
 
 import java.time.LocalDateTime;
 
+import com.example.messageria.boleto.controller.exception.CustomizedNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.messageria.boleto.controller.exception.ApplicationException;
@@ -40,5 +41,18 @@ public class BoletoService {
     // envia mensagem para kafka
     boletoProducer.enviarMensagem(BoletoMapper.toAvro(boletoEntity));
     return BoletoMapper.toDTO(boletoEntity);
+  }
+
+  public void atualizar(BoletoEntity boleto){
+    var boletoAtual = recuperaBoleto(boleto.getCodigoBarras());
+
+    boletoAtual.setSituacaoBoleto(boleto.getSituacaoBoleto());
+    boletoAtual.setDataAtualizacao(LocalDateTime.now());
+    boletoRepository.save(boletoAtual);
+  }
+
+  private BoletoEntity recuperaBoleto(String codigoBarras){
+    return boletoRepository.findByCodigoBarras(codigoBarras)
+            .orElseThrow(() -> new CustomizedNotFoundException("Boleto não encontrado"));
   }
 }
