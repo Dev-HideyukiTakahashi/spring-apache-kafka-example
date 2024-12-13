@@ -15,10 +15,13 @@ public class ValidarBoletoService {
 
   private final BoletoRepository boletoRepository;
   private final NotificaoProducer notificaoProducer;
+  private final PagarBoletoService pagarBoletoService;
 
-  public ValidarBoletoService(BoletoRepository boletoRepository, NotificaoProducer notificaoProducer) {
+  public ValidarBoletoService(BoletoRepository boletoRepository, NotificaoProducer notificaoProducer,
+      PagarBoletoService pagarBoletoService) {
     this.boletoRepository = boletoRepository;
     this.notificaoProducer = notificaoProducer;
+    this.pagarBoletoService = pagarBoletoService;
   }
 
   public void validar(BoletoEntity boletoEntity) {
@@ -32,8 +35,9 @@ public class ValidarBoletoService {
       complementarBoletoSucesso(boletoEntity);
       boletoRepository.save(boletoEntity);
       // notificando
-
+      notificaoProducer.enviarMensagem(BoletoMapper.toAvro(boletoEntity));
       // seguindo com pagamento
+      pagarBoletoService.pagar(boletoEntity);
     }
   }
 
